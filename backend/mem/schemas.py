@@ -38,3 +38,23 @@ class LikeOfMemInCreatePydantic(LikeOfMemBasePydantic):
 
 class LikeOfMemInUpdatePydantic(BaseModel):
     pass
+
+
+class SkipOfMemBasePydantic(BaseModel):
+    user_id: int
+    mem_id: int
+
+
+class SkipOfMemPydantic(LikeOfMemBasePydantic):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class SkipOfMemInCreatePydantic(LikeOfMemBasePydantic):
+    pass
+
+
+class SkipOfMemInUpdatePydantic(BaseModel):
+    pass

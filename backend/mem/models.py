@@ -24,5 +24,5 @@ class SkipOfMem(Base):
     mem_id = Column(Integer, ForeignKey(Mem.id, ondelete="CASCADE"))
     user_id = Column(Integer, ForeignKey(User.id, ondelete="CASCADE"))
     __table_args__ = (
-        UniqueConstraint('mem_id', 'user_id', name='_mem_user_uc'),
+        UniqueConstraint('mem_id', 'user_id', name='_mem_user_skip_uc'),
     )

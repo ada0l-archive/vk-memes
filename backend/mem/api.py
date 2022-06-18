@@ -3,8 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from backend.mem.models import Mem, LikeOfMem
-from backend.mem.repository import MemRepository, LikeOfMemRepository
-from backend.mem.schemas import MemPydantic, LikeOfMemInCreatePydantic, LikeOfMemPydantic
+from backend.mem.repository import MemRepository, LikeOfMemRepository, SkipOfMemRepository
+from backend.mem.schemas import MemPydantic, LikeOfMemInCreatePydantic, LikeOfMemPydantic, SkipOfMemInCreatePydantic
 from backend.core.database import get_session
 from backend.core.router_generator import RouterGenerator
 from backend.user.dependencies import get_current_active_user
@@ -18,6 +18,9 @@ async def get_repository(session: AsyncSession = Depends(get_session)):
 async def get_like_repository(session: AsyncSession = Depends(get_session)):
     return LikeOfMemRepository(session)
 
+
+async def get_skip_repository(session: AsyncSession = Depends(get_session)):
+    return SkipOfMemRepository(session)
 
 router = RouterGenerator(
     prefix="/mem",
@@ -49,6 +52,25 @@ async def like_mem(
     if like:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Already liked')
     return await like_rep.create(LikeOfMemInCreatePydantic(
+        mem_id=item_id,
+        user_id=user.id
+    ))
+
+
+@router.post("/{item_id}/skip", response_model=LikeOfMemPydantic)
+async def skip_mem(
+    item_id: int,
+    rep: MemRepository = Depends(get_repository),
+    skip_rep: SkipOfMemRepository = Depends(get_skip_repository),
+    user: User = Depends(get_current_active_user)
+):
+    mem = await rep.get_by_id(item_id)
+    if not mem:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    skip = await skip_rep.get(item_id, user.id)
+    if skip:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Already skipped')
+    return await skip_rep.create(SkipOfMemInCreatePydantic(
         mem_id=item_id,
         user_id=user.id
     ))

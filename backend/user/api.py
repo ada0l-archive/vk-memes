@@ -19,7 +19,7 @@ router = RouterGenerator(
 )
 
 
-@router.post("/me", response_model=UserPydantic)
+@router.get("/me", response_model=UserPydantic)
 async def get_me(
     user: User = Depends(get_current_active_user),
 ):

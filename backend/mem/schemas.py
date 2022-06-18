@@ -18,3 +18,23 @@ class MemInCreatePydantic(MemBasePydantic):
 
 class MemInUpdatePydantic(MemBasePydantic):
     pass
+
+
+class LikeOfMemBasePydantic(BaseModel):
+    user_id: int
+    mem_id: int
+
+
+class LikeOfMemPydantic(LikeOfMemBasePydantic):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class LikeOfMemInCreatePydantic(LikeOfMemBasePydantic):
+    pass
+
+
+class LikeOfMemInUpdatePydantic(BaseModel):
+    pass

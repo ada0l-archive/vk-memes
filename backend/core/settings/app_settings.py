@@ -32,9 +32,11 @@ class AppSettings(BaseAppSettings):
     logging_hosts: int = logging.INFO
     logging_level = logging.INFO
     loggers: tuple[str, str] = ("uvicorn.asgi", "uvicorn.access")
+    ACCESS_TOKEN_EXPIRE_MINUTES = 1000
 
     installed_apps = [
         "backend.mem",
+        "backend.user"
     ]
 
     models = []

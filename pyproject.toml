@@ -10,7 +10,7 @@ fastapi = "^0.75.2"
 uvicorn = "^0.17.6"
 asyncpg = "^0.25.0"
 loguru = "^0.6.0"
-pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+pydantic = {extras = ["dotenv"], version = "^1.9.1"}
 requests = "^2.27.1"
 httpx = "^0.22.0"
 SQLAlchemy = "^1.4.36"
@@ -20,6 +20,7 @@ databases = "^0.5.5"
 python-jose = "^3.3.0"
 passlib = "^1.7.4"
 python-multipart = "^0.0.5"
+email-validator = "^1.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"

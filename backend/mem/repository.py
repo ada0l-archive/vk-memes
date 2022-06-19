@@ -1,6 +1,7 @@
 from typing import Type
 
-from sqlalchemy import and_
+from sqlalchemy import and_, func, select
+from sqlalchemy.orm import with_expression
 
 from backend.core.repository import BaseRepository
 from backend.mem import schemas, models
@@ -32,6 +33,19 @@ class MemRepository(
             order_by(self._model.id.desc())
         )
         return q.scalars().first()
+
+    async def get_stat(self):
+        q = await self.session.execute(
+            self.get_query().
+            join(LikeOfMem, isouter=True).
+            options(with_expression(models.Mem.likes_count, func.count(LikeOfMem.id))).
+            join(SkipOfMem, isouter=True).
+            options(with_expression(models.Mem.skips_count, func.count(SkipOfMem.id))).
+            group_by(self._model.id).
+            order_by(func.count(LikeOfMem.id).desc()).
+            limit(5)
+        )
+        return q.scalars().all()
 
 
 class LikeOfMemRepository(

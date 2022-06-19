@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.core.settings import settings
 from backend.mem.api import router as mem
 from backend.user.api import router as user
+from backend.stat.api import router as stat
 
 settings.configure_logging()
 
@@ -26,6 +27,7 @@ async def startup_event():
 
 app.include_router(mem)
 app.include_router(user)
+app.include_router(stat)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)  # noqa

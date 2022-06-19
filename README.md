@@ -6,6 +6,8 @@ docker-compose build
 docker-compose up
 ```
 
+Чтобы заполнить бд нужно внутри контейнера ```web``` запустить ```poetry run python get_memes.py```
+
 Swagger: ```127.0.0.1:8000/docs```
 
 1. Регаемся ```POST /user/```
